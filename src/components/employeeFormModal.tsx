@@ -1,6 +1,9 @@
 import { useEffect } from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Select } from "antd";
 import type { Employee } from "../types";
+import utils from "../hooks/util";
+
+const { Option } = Select;
 
 interface Props {
   open: boolean;
@@ -11,10 +14,11 @@ interface Props {
 
 function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
   const [form] = Form.useForm();
+  const {COUNTRIES, US_STATES} = utils
 
   useEffect(() => {
     if (open) {
-      form.setFieldsValue(initialValues || {});
+      form.setFieldsValue(initialValues || { country: "USA" });
     } else {
       form.resetFields();
     }
@@ -88,9 +92,15 @@ function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
         <Form.Item
           name="state"
           label="State"
-          rules={[{ required: true, message: "Please enter state" }]}
+          rules={[{ required: true, message: "Please select state" }]}
         >
-          <Input />
+          <Select placeholder="Select state">
+            {US_STATES.map((state) => (
+              <Option key={state} value={state}>
+                {state}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
@@ -98,7 +108,10 @@ function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
           label="Zip Code"
           rules={[
             { required: true, message: "Please enter zip code" },
-            { pattern: /^\d{5,6}$/, message: "Zip code must be 5 or 6 digits" },
+            {
+              pattern: /^\d{5,6}$/,
+              message: "Zip code must be 5 or 6 digits",
+            },
           ]}
         >
           <Input placeholder="12345 or 641605" />
@@ -107,9 +120,15 @@ function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
         <Form.Item
           name="country"
           label="Country"
-          rules={[{ required: true, message: "Please enter country" }]}
+          rules={[{ required: true, message: "Please select country" }]}
         >
-          <Input />
+          <Select placeholder="Select country" defaultValue="USA">
+            {COUNTRIES.map((country) => (
+              <Option key={country} value={country}>
+                {country}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>
