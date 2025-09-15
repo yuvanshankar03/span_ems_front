@@ -21,15 +21,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [token]);
 
   const login = async (email: string, password: string) => {
-    const response = await authService.login(email, password);
+    try{
+      const response = await authService.login(email, password);
     setToken(response.token);
     return response;
+    }
+    catch(err:any){
+      throw err.response?.data?.error || 'Failed to login';
+    }
   };
 
   const register = async (employer: Employer) => {
-    const response = await authService.register(employer);
-    setToken(response.token);
-    return response;
+    try{
+      const response = await authService.register(employer);
+      setToken(response.token);
+      return response;
+    }
+    catch(err:any){
+      throw err.response?.data?.error || 'Failed to register';
+    }
   };
 
   const logout = () => setToken(null);

@@ -9,7 +9,7 @@ interface Props {
   initialValues?: Employee;
 }
 
-export default function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
+function EmployeeFormModal({ open, onClose, onSubmit, initialValues }: Props) {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -40,31 +40,80 @@ export default function EmployeeFormModal({ open, onClose, onSubmit, initialValu
       onOk={handleOk}
     >
       <Form form={form} layout="vertical">
-        <Form.Item name="name" label="Name" rules={[{ required: true, message: "Enter employee name" }]}>
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[
+            { required: true, message: "Please enter employee name" },
+            { min: 3, message: "Name must be at least 3 characters" },
+          ]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="ssn" label="SSN" rules={[{ required: true, message: "Enter SSN" }]}>
+
+        <Form.Item
+          name="ssn"
+          label="SSN"
+          rules={[
+            { required: true, message: "Please enter SSN" },
+            {
+              pattern: /^\d{3}-\d{2}-\d{4}$/,
+              message: "SSN must be in format XXX-XX-XXXX",
+            },
+          ]}
+        >
+          <Input placeholder="123-45-6789" />
+        </Form.Item>
+
+        <Form.Item
+          name="address1"
+          label="Address Line 1"
+          rules={[{ required: true, message: "Please enter address" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="address1" label="Address Line 1" rules={[{ required: true, message: "Enter address" }]}>
-          <Input />
-        </Form.Item>
+
         <Form.Item name="address2" label="Address Line 2">
           <Input />
         </Form.Item>
-        <Form.Item name="city" label="City" rules={[{ required: true, message: "Enter city" }]}>
+
+        <Form.Item
+          name="city"
+          label="City"
+          rules={[{ required: true, message: "Please enter city" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="state" label="State" rules={[{ required: true, message: "Enter state" }]}>
+
+        <Form.Item
+          name="state"
+          label="State"
+          rules={[{ required: true, message: "Please enter state" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="zip" label="Zip Code" rules={[{ required: true, message: "Enter zip code" }]}>
-          <Input />
+
+        <Form.Item
+          name="zip"
+          label="Zip Code"
+          rules={[
+            { required: true, message: "Please enter zip code" },
+            { pattern: /^\d{5,6}$/, message: "Zip code must be 5 or 6 digits" },
+          ]}
+        >
+          <Input placeholder="12345 or 641605" />
         </Form.Item>
-        <Form.Item name="country" label="Country" rules={[{ required: true, message: "Enter country" }]}>
+
+        <Form.Item
+          name="country"
+          label="Country"
+          rules={[{ required: true, message: "Please enter country" }]}
+        >
           <Input />
         </Form.Item>
       </Form>
     </Modal>
   );
 }
+
+export default EmployeeFormModal;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = `http://192.168.10.6:3001`
+const API_BASE_URL = `http://192.168.1.28:3001`
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -19,7 +19,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
